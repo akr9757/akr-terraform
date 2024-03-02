@@ -9,8 +9,30 @@ resource "aws_instance" "instance" {
   }
 }
 
+resource "null_resource" "provisioner" {
+  for_each = var.components
+  depends_on = [aws_instance.instance, aws_route53_record.record]
 
-resource "aws_route53_record" "www" {
+  provisioner "remote-exec" {
+
+    connection {
+      type     = "ssh"
+      user     = "centos"
+      password = "DevOps321"
+      host     = aws_instance.instance[each.value["name"]].private_ip
+    }
+
+    inline = [
+      "rm -rf akr-shell"
+      "git clone https://github.com/akr9757/akr-shell.git",
+      "cd akr-shell",
+      "sudo bash ${each.value["name"]}.sh $(lookup(each.value, "password", "dummy"))"
+    ]
+  }
+}
+
+
+resource "aws_route53_record" "record" {
   for_each = var.components
   zone_id = "Z097978826RFVR2P0Q5DM"
   name    = "${each.value["name"]}-dev.akrdevopsb72.online"
@@ -40,14 +62,17 @@ variable "components" {
     shipping = {
       name          = "shipping"
       instance_type = "t3.micro"
+      password = "RoboShop@1"
     }
     payment = {
       name          = "payment"
       instance_type = "t3.micro"
+      password = "roboshop123"
     }
     dispatch = {
       name          = "dispatch"
       instance_type = "t3.micro"
+      password = "roboshop123"
     }
     mongodb = {
       name          = "mongodb"
@@ -60,10 +85,12 @@ variable "components" {
     mysql = {
       name          = "mysql"
       instance_type = "t3.micro"
+      password = "RoboShop@1"
     }
     rabbitmq = {
       name          = "rabbitmq"
       instance_type = "t3.micro"
+      password = "roboshop123"
     }
   }
 }
