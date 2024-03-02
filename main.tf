@@ -11,8 +11,9 @@ resource "aws_instance" "instance" {
 
 
 resource "aws_route53_record" "www" {
+  count = length(var.components)
   zone_id = "Z097978826RFVR2P0Q5DM"
-  name    = "frontend-dev.akrdevopsb72.online"
+  name    = "${var.components[count.index]}-dev.akrdevopsb72.online"
   type    = "A"
   ttl     = 30
   records = [aws_instance.instance.private_ip]
