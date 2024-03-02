@@ -1,16 +1,68 @@
-resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
+resource "aws_instance" "instance" {
+  count = length(var.components)
+  ami           = data.aws_ami.ami.id
   instance_type = "t3.micro"
+  vpc_security_group_ids = [data.aws_security_group.sg.id]
 
   tags = {
-    Name = "HelloWorld"
+    Name = "${var.components[count.index]}"
   }
 }
+
 
 resource "aws_route53_record" "www" {
   zone_id = "Z097978826RFVR2P0Q5DM"
   name    = "frontend-dev.akrdevopsb72.online"
   type    = "A"
   ttl     = 30
-  records = [aws_instance.web.private_ip]
+  records = [aws_instance.instance.private_ip]
+}
+
+variable "components" {
+  default = [
+    frontend = {
+      name = "frontend"
+      instance_type = "t3.micro"
+    }
+    catalogue = {
+      name = "catalogue"
+      instance_type = "t3.micro"
+    }
+    cart = {
+      name = "cart"
+      instance_type = "t3.micro"
+    }
+    user = {
+      name = "user"
+      instance_type = "t3.micro"
+    }
+    shipping = {
+      name = "shipping"
+      instance_type = "t3.micro"
+    }
+    payment = {
+      name = "payment"
+      instance_type = "t3.micro"
+    }
+    dispatch = {
+      name = "dispatch"
+      instance_type = "t3.micro"
+    }
+    mongodb = {
+      name = "mongodb"
+      instance_type = "t3.micro"
+    }
+    redis = {
+      name = "redis"
+      instance_type = "t3.micro"
+    }
+    mysql = {
+      name = "mysql"
+      instance_type = "t3.micro"
+    }
+    rabbitmq = {
+      name          = "rabbitmq"
+      instance_type = "t3.micro"
+    }
+  ]
 }

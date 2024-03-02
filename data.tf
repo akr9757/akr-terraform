@@ -1,4 +1,10 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
+data "aws_ami" "ami" {
   owners = ["973714476881"]
+  most_recent = true
+  name_regex = "Centos-8-DevOps-Practice"
+
+}
+
+data "aws_security_group" "sg" {
+  name = "allow-all"
 }
