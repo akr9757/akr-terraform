@@ -13,10 +13,10 @@ resource "aws_instance" "instance" {
 resource "aws_route53_record" "www" {
   for_each = var.components
   zone_id = "Z097978826RFVR2P0Q5DM"
-  name    = "each.value[name]-dev.akrdevopsb72.online"
+  name    = "${each.value[name]}-dev.akrdevopsb72.online"
   type    = "A"
   ttl     = 30
-  records = [aws_instance.instance[each.value[name]].private_ip]
+  records = [aws_instance.instance[each.value["name"]].private_ip]
 }
 
 variable "components" {
