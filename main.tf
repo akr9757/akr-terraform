@@ -23,11 +23,10 @@ resource "null_resource" "provisioner" {
     }
 
     inline = [
-#      "rm -rf akr-shell",
-#      "git clone https://github.com/akr9757/akr-shell.git",
-#      "cd akr-shell",
-#      "sudo bash ${each.value["name"]}.sh ${lookup(each.value, "password", "dummy")}",
-      "echo hii"
+      "rm -rf akr-shell",
+      "git clone https://github.com/akr9757/akr-shell.git",
+      "cd akr-shell",
+      "sudo bash ${each.value["name"]}.sh ${lookup(each.value, "password", "dummy")}"
     ]
   }
 }
