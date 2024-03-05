@@ -3,7 +3,7 @@ module "servers" {
 
   source = "./module"
   componet_name = each.value["name"]
-  password = lookup(each.value, "password" "null")
+  password = lookup(each.value, "password", "null")
   env = var.env
 
 }
