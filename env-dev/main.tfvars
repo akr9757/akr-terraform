@@ -1,4 +1,4 @@
-components = {
+app_servers = {
   frontend = {
     name          = "frontend"
     instance_type = "t3.micro"
@@ -30,6 +30,12 @@ components = {
     instance_type = "t3.micro"
     password = "roboshop123"
   }
+
+}
+
+env="dev"
+
+database_servers = {
   mongodb = {
     name          = "mongodb"
     instance_type = "t3.micro"
@@ -49,5 +55,3 @@ components = {
     password = "roboshop123"
   }
 }
-
-env="dev"
